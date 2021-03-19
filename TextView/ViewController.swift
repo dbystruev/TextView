@@ -10,8 +10,8 @@ import UIKit
 class ViewController: UIViewController {
     
     // MARK: - Outlet
-    /// The example text view
-    @IBOutlet weak var textView: UITextView! {
+    /// Text view at the top of the screen
+    @IBOutlet weak var topTextView: UITextView! {
         // Called after text view from storyboard is tied with this outlet
         didSet {
             // Save gesture recognizer for future removal
@@ -19,15 +19,18 @@ class ViewController: UIViewController {
             self.tapRecognizer = tapRecognizer
             
             // Allow cursor to blink
-            textView.becomeFirstResponder()
+            topTextView.becomeFirstResponder()
             
             // Don't show keyboard by assigning empty UIView to input view
-            textView.inputView = UIView()
+            topTextView.inputView = UIView()
             
             // Enable to recognizer user tap for future removal of input view
-            textView.addGestureRecognizer(tapRecognizer)
+            topTextView.addGestureRecognizer(tapRecognizer)
         }
     }
+    
+    /// Text view at the middle of the screen
+    @IBOutlet weak var middleTextView: UITextView!
     
     // MARK: - Properties
     /// Tap gesture for the text view
@@ -41,11 +44,14 @@ class ViewController: UIViewController {
         guard gesture.state == .ended else { return }
         
         // Remove gesture recognizer so the user won't tap again
-        textView.removeGestureRecognizer(tapRecognizer)
+        topTextView.removeGestureRecognizer(tapRecognizer)
         tapRecognizer = nil
         
         // Remove empty input view — this will show the keyboard again
-        textView.inputView = nil
-        textView.reloadInputViews()
+        topTextView.inputView = nil
+        topTextView.reloadInputViews()
+        
+        // Focus on top text view
+        topTextView.becomeFirstResponder()
     }
 }
