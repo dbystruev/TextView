@@ -8,12 +8,25 @@
 import UIKit
 
 class ViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
+    
+    @IBOutlet weak var textView: UITextView! {
+        didSet {
+            let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(textViewTapped(_:)))
+            self.gestureRecognizer = gestureRecognizer
+            textView.becomeFirstResponder()
+            textView.inputView = UIView()
+            textView.addGestureRecognizer(gestureRecognizer)
+        }
     }
-
-
+    
+    weak var gestureRecognizer: UITapGestureRecognizer!
+    
+    @objc func textViewTapped(_ gesture: UITapGestureRecognizer) {
+        guard gesture.state == .ended else { return }
+        textView.inputView = nil
+        textView.reloadInputViews()
+        textView.removeGestureRecognizer(gestureRecognizer)
+        gestureRecognizer = nil
+    }
 }
 
